@@ -1,0 +1,159 @@
+body,
+html {
+    margin: 0px;
+    font-family: sans-serif;
+    font-size: 15px;
+
+}
+
+header {
+    padding: 20px;
+    height: 80px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: white;
+    background-color: gray;
+}
+
+.logo {
+    width: 60px;
+    height: 60px;
+}
+
+.headerContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    font-weight: bolder;
+    font-size: 2.5rem;
+}
+
+.content {
+    width: 100%;
+}
+
+.contentContainer {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    top: 120px;
+    bottom: 0;
+    width: 100%;
+}
+
+.sideBar {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    font-size: 1.3rem;
+    font-weight: bold;
+    gap: 20px;
+    width: 300px;
+    padding: 20px;
+    background-color: blue;
+}
+
+.defaultProjects {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.subCateogary {
+    display: flex;
+    width: 100%;
+}
+
+.subCateogary:hover {
+    background-color: red;
+}
+
+button {
+    font-size: 1.1rem;
+    padding: 10px;
+    border: none;
+    background: none;
+    color: white;
+}
+
+.projectsList {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.taskContent {
+    padding: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.contentHeader {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.taskCardSection {
+    width: 100%;
+}
+
+.taskCard {
+    width: 100%;
+}
+
+.taskCard {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.taskCard > .leftContent {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: flex-start;
+
+}
+
+.taskCard > .rightContent {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: flex-start;
+    height: 100%;
+    font-size: 1.1rem;
+}
+
+.star, .edit, .delete {
+    width: 20px;
+    height: 20px;
+}
+
+.addTask {
+    font-size: 1.2rem;
+    font-weight: bold;
+    width: 100%
+}
+
+.addTaskContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.formButtons > button {
+    color: black;
+}
