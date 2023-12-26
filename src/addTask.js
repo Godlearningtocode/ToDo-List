@@ -1,6 +1,7 @@
 export default function addTask() {
     const taskContent = document.querySelector('.taskContent');
     const form = document.createElement('form');
+    form.classList.add('form');
     const titleLabel = document.createElement('label');
     titleLabel.htmlFor = 'title';
     titleLabel.classList.add('title');
@@ -9,9 +10,10 @@ export default function addTask() {
     titleInput.name = 'title';
     titleInput.id = 'title';
     titleInput.type = 'text';
+    titleInput.required = true;
     const descriptionLabel = document.createElement('label');
     descriptionLabel.htmlFor = 'description';
-    descriptionLabel.classList.add('title');
+    descriptionLabel.classList.add('description');
     descriptionLabel.innerText = 'Description:';
     const descriptionInput = document.createElement('input');
     descriptionInput.name = 'description';
@@ -25,13 +27,16 @@ export default function addTask() {
     deadlineInput.name = 'deadline';
     deadlineInput.id = 'deadline';
     deadlineInput.type = 'date';
+    deadlineInput.required = true;
     const formButtons = document.createElement('div');
     formButtons.classList.add('formButtons');
     const addButton = document.createElement('button');
+    addButton.type = 'button';
     addButton.id = 'addButton';
     addButton.innerText = 'Add'
     const cancelButton = document.createElement('button');
-    cancelButton.classList.add('cancelButton');
+    cancelButton.type = 'button';
+    cancelButton.id = 'cancelButton';
     cancelButton.innerText = 'Cancel';
 
     formButtons.appendChild(addButton);

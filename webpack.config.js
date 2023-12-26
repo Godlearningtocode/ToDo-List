@@ -6,7 +6,6 @@ module.exports = {
         './src/index.js',
         './src/addTask.js',
         './src/appendTask.js',
-        './src/removeAddTask.js',
         './src/today.js',
     ],
     devtool: 'inline-source-map',

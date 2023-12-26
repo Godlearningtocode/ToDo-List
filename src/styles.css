@@ -113,6 +113,12 @@ button {
     width: 100%;
 }
 
+.editBox {
+    display: flex;;
+    flex-direction: column;
+    gap: 10px;
+}
+
 .taskCard {
     display: flex;
     flex-direction: row;

@@ -24,7 +24,7 @@ export default function appendTask(task) {
     description.classList.add('description');
     description.innerText = task.descriptionValue;
     const date = document.createElement('div');
-    date.classList.add('.date');
+    date.classList.add('date');
     date.innerText = task.deadlineValue;
     const star = new Image()
     star.src = starImage;;
