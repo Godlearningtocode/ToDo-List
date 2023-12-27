@@ -7,6 +7,10 @@ module.exports = {
         './src/addTask.js',
         './src/appendTask.js',
         './src/today.js',
+        './src/checkbox.js',
+        './src/deleteTask.js',
+        './src/editTask.js',
+        './src/importantTasks.js'
     ],
     devtool: 'inline-source-map',
     output: {

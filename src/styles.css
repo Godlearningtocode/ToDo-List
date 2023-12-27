@@ -144,7 +144,7 @@ button {
     font-size: 1.1rem;
 }
 
-.star, .edit, .delete {
+.star, .edit, .delete, .filledStar {
     width: 20px;
     height: 20px;
 }
