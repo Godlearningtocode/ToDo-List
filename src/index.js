@@ -126,6 +126,20 @@ document.body.addEventListener('click', (event) => {
     }
 })
 
+//10. click event for this week tab
+document.body.addEventListener('click', (event) => {
+    if(event.target.id == 'thisWeek') {
+        thisWeekPage();
+    }
+})
+
+//11. click event for impotant tab
+document.body.addEventListener('click', (event) => {
+    if(event.target.id == 'important') {
+        importantPage();
+    }
+})
+
 
 //FUNCTIONS:-
 //1. function for display of dom tree of today page
@@ -137,4 +151,97 @@ function todayPage() {
     header.classList.add('header');
     header.innerText = 'Today';
     taskContent.appendChild(header);
+    const taskCardSection = document.createElement('div');
+    taskCardSection.classList.add('taskCardSection');
+    taskContent.appendChild(taskCardSection);
+    for(let i = 0; i < tasksArray.length; i++) {
+        if(tasksArray[i].deadlineValue == todayDate().currentDate){
+            let task = {
+                titleValue: tasksArray[i].titleValue,
+                descriptionValue: tasksArray[i].descriptionValue,
+                deadlineValue: tasksArray[i].deadlineValue,
+            }
+            appendTask(task);
+        }
+    }
+}
+
+//2. function to get todays date
+function todayDate() {
+    const date = new Date();
+    
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+
+    let currentDate = `${year}-${month}-${day}`;
+    return { currentDate };
+}
+
+//3. function for thisWeekPage dom tree display
+function thisWeekPage() {
+    while(taskContent.firstChild) {
+        taskContent.removeChild(taskContent.firstChild);
+    }
+    const header = document.createElement('div');
+    header.innerText = 'This Week';
+    header.classList.add('header');
+    const taskCardSection = document.createElement('div');
+    taskCardSection.classList.add('taskCardSection');
+
+    taskContent.appendChild(header);
+    taskContent.appendChild(taskCardSection);
+
+    for(let i = 0; i < tasksArray.length; i++) {
+        if(tasksArray[i].deadlineValue <= oneWeekDate().oneWeekFromToday && tasksArray[i].deadlineValue >= todayDate().currentDate) {
+            let task = {
+                titleValue: tasksArray[i].titleValue,
+                descriptionValue: tasksArray[i].descriptionValue,
+                deadlineValue: tasksArray[i].deadlineValue,
+            }
+            appendTask(task);
+        }
+    }
+}
+
+//4. function to get a date one week from now
+function oneWeekDate() {
+    const date = new Date();
+    date.setDate(new Date().getDate() + 7);
+
+    let day = (date.getDate()) >= 10 ? (date.getDate()) : "0" + (date.getDate());
+    let month = (date.getMonth() + 1) >= 10 ? (date.getMonth() + 1) : "0" + (date.getMonth() + 1);
+    let year = date.getFullYear();
+
+    let oneWeekFromToday = `${year}-${month}-${day}`;
+    return {oneWeekFromToday};
+}
+
+//5. function for display for important tab
+function importantPage() {
+    while(taskContent.firstChild) {
+        taskContent.removeChild(taskContent.firstChild);
+    }
+    const header = document.createElement('div');
+    header.innerText = 'Important';
+    header.classList.add('header');
+    const taskCardSection = document.createElement('div');
+    taskCardSection.classList.add('taskCardSection');
+
+    taskContent.appendChild(header);
+    taskContent.appendChild(taskCardSection);
+
+    for(let i = 0; i < importantTasksArray.length; i++) {
+        let task = {
+            titleValue: importantTasksArray[i].titleValue,
+            descriptionValue: importantTasksArray[i].descriptionValue,
+            deadlineValue: importantTasksArray[i].deadlineValue,
+        }
+        appendTask(task);
+    }
+
+    const star = document.querySelector('.star');
+    star.src = filledStarImage;
+    star.id = 'star';
+    star.classList.remove('star');
 }
