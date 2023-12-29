@@ -15,16 +15,17 @@ export function changeStar() {
 }
 
 // function to add values to importantTasks array
-export function addImportantTasks(importantTasksArray) {
+export function addImportantTasks(tasksArray) {
     const star = document.querySelector('.star');
     star.parentElement.parentElement.classList.add('important');
     const important = document.querySelector('.important');
     const titleValue = important.firstChild.firstChild.nextSibling.firstChild.innerText;
-    const descriptionValue = important.firstChild.firstChild.nextSibling.firstChild.nextSibling.innerText;
-    const deadlineValue = important.firstChild.nextSibling.firstChild.innerText;
 
-    let task = {titleValue,descriptionValue,deadlineValue};
-    importantTasksArray.push(task);
+    for(let i = 0; i < tasksArray.length; i++) {
+        if(tasksArray[i].titleValue == titleValue) {
+            tasksArray[i].importantValue = 'yes'
+        }
+    }
 }
 
 // function to change importnt filled icon to non filled icon and remove important class from parents parent node
@@ -39,12 +40,12 @@ export function changeFilledStar() {
 }
 
 // remove task from importantTaskArray
-export function removeImportantTasks(importantTasksArray) {
+export function removeImportantTasks(tasksArray) {
     const importantTaskCard = document.querySelector('.important');
     const removeImportantTitle = importantTaskCard.firstChild.firstChild.nextSibling.firstChild.innerText;
-    for(let i = 0; i < importantTasksArray.length; i++) {
-        if(removeImportantTitle == importantTasksArray[i].titleValue) {
-            importantTasksArray.splice(i, 1);
+    for(let i = 0; i < tasksArray.length; i++) {
+        if(removeImportantTitle == tasksArray[i].titleValue) {
+            tasksArray[i].importantValue = 'no';
         }
     }
 }

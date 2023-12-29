@@ -28,6 +28,18 @@ export default function addTask() {
     deadlineInput.id = 'deadline';
     deadlineInput.type = 'date';
     deadlineInput.required = true;
+    const importanceLabel = document.createElement('label');
+    importanceLabel.htmlFor = 'importance';
+    importanceLabel.classList.add('importance');
+    importanceLabel.innerText = 'Important:';
+    const importanceInput = document.createElement('SELECT');
+    importanceInput.id = 'importance';
+    const importanceYes = document.createElement('option');
+    importanceYes.value = 'yes';
+    importanceYes.innerText = 'Yes';
+    const importanceNo = document.createElement('option');
+    importanceNo.value = 'no';
+    importanceNo.innerText = 'No'
     const formButtons = document.createElement('div');
     formButtons.classList.add('formButtons');
     const addButton = document.createElement('button');
@@ -39,6 +51,9 @@ export default function addTask() {
     cancelButton.id = 'cancelButton';
     cancelButton.innerText = 'Cancel';
 
+    importanceInput.appendChild(importanceYes);
+    importanceInput.appendChild(importanceNo);
+
     formButtons.appendChild(addButton);
     formButtons.appendChild(cancelButton);
 
@@ -48,6 +63,8 @@ export default function addTask() {
     form.appendChild(descriptionInput);
     form.appendChild(deadlineLabel);
     form.appendChild(deadlineInput);
+    form.appendChild(importanceLabel);
+    form.appendChild(importanceInput);
     form.appendChild(formButtons);
 
     taskContent.appendChild(form);

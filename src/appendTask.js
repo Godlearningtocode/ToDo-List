@@ -1,10 +1,12 @@
 import starImage from './star_icon.png';
+import filledStar from './filled_star.png'
 import editImage from './edit_icon.png';
 import deleteImage from './delete_icon.png';
 
 export default function appendTask(task) {
     const taskCardSection = document.querySelector('.taskCardSection');
     const taskCard = document.createElement('div');
+    const importanceValue = task.importantValue;
     taskCard.classList.add('taskCard');
     const leftContent = document.createElement('div');
     leftContent.classList.add('leftContent');
@@ -26,8 +28,12 @@ export default function appendTask(task) {
     const date = document.createElement('div');
     date.classList.add('date');
     date.innerText = task.deadlineValue;
-    const star = new Image()
-    star.src = starImage;;
+    const star = new Image();
+    if(importanceValue == 'yes'){
+        star.src = filledStar;
+    } else {
+        star.src = starImage;
+    }
     star.classList.add('star');
     const edit = new Image();
     edit.src = editImage;

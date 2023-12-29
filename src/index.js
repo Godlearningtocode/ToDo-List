@@ -35,7 +35,6 @@ headerLogo.src = logoImage;
 
 //array for storing form data
 let tasksArray = [];
-let importantTasksArray = [];
 
 
 //EVENTLISTENERS:-
@@ -53,8 +52,9 @@ document.body.addEventListener('click', (event) => {
         const titleValue = document.querySelector('#title').value;
         const descriptionValue = document.querySelector('#description').value;
         const deadlineValue = document.querySelector('#deadline').value;
+        const importantValue = document.querySelector('#importance').value;
 
-        const task = {titleValue, descriptionValue, deadlineValue};
+        const task = {titleValue, descriptionValue, deadlineValue, importantValue};
         const form = document.querySelector('form');
         if(form.checkValidity()) {
             tasksArray.push(task);
@@ -118,10 +118,10 @@ document.body.addEventListener('click', (event) => {
 //9. click event for important icon to change empty star to filled star and add task values to importantTasks array.
 document.body.addEventListener('click', (event) => {
     if(event.target.classList.contains('star') == true) {
-        addImportantTasks(importantTasksArray);
+        addImportantTasks(tasksArray);
         changeStar();
     } else if(event.target.classList.contains('filledStar') == true) {
-        removeImportantTasks(importantTasksArray);
+        removeImportantTasks(tasksArray);
         changeFilledStar();
     }
 })
@@ -168,6 +168,7 @@ function todayPage() {
 
 //2. function to get todays date
 function todayDate() {
+    taskContent.id = 'todayTab';
     const date = new Date();
     
     let day = date.getDate();
@@ -188,6 +189,7 @@ function thisWeekPage() {
     header.classList.add('header');
     const taskCardSection = document.createElement('div');
     taskCardSection.classList.add('taskCardSection');
+    taskContent.id = 'thisWeekTab';
 
     taskContent.appendChild(header);
     taskContent.appendChild(taskCardSection);
@@ -227,21 +229,20 @@ function importantPage() {
     header.classList.add('header');
     const taskCardSection = document.createElement('div');
     taskCardSection.classList.add('taskCardSection');
+    taskContent.parentElement.id = 'importantTab';
 
     taskContent.appendChild(header);
     taskContent.appendChild(taskCardSection);
 
-    for(let i = 0; i < importantTasksArray.length; i++) {
+    for(let i = 0; i < tasksArray.length; i++) {
         let task = {
-            titleValue: importantTasksArray[i].titleValue,
-            descriptionValue: importantTasksArray[i].descriptionValue,
-            deadlineValue: importantTasksArray[i].deadlineValue,
+            titleValue: tasksArray[i].titleValue,
+            descriptionValue: tasksArray[i].descriptionValue,
+            deadlineValue: tasksArray[i].deadlineValue,
+            importantValue: tasksArray[i].importantValue
         }
-        appendTask(task);
+        if(task.importantValue == 'yes') {
+            appendTask(task);
+        }
     }
-
-    const star = document.querySelector('.star');
-    star.src = filledStarImage;
-    star.id = 'star';
-    star.classList.remove('star');
 }
