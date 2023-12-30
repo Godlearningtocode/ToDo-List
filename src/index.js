@@ -26,6 +26,7 @@ const allTasksButton = document.querySelector('#allTasks');
 const taskCardSection = document.querySelector('.taskCardSection');
 const addTaskButton = document.querySelector('.addTask');
 const todayButton = document.querySelector('#today');
+const addProject = document.querySelector('.addProject');
 let isFormPresent = false;  
 
 
@@ -36,6 +37,7 @@ headerLogo.src = logoImage;
 
 //array for storing form data
 let tasksArray = [];
+let projectsArray = [];
 
 
 //EVENTLISTENERS:-
@@ -147,6 +149,21 @@ document.body.addEventListener('click', (event) => {
 //12. click event for all tasks page
 allTasksButton.addEventListener('click', () => {
     allTasks();
+})
+
+//13. click event for add Project to append form for project input
+addProject.addEventListener('click', () => {
+    addProjectWindow();
+})
+
+//14. click event for addProject addButtonProject to append project to the sidebar
+document.body.addEventListener('click', (event) => {
+    if(event.target.classList.contains('addButtonProject') == true) {
+        const projectTitle = document.querySelector('#projectValue').value;
+        let project = {projectTitle};
+        projectsArray.push(project);
+        event.preventDefault();
+    }
 })
 
 
@@ -285,4 +302,38 @@ function allTasks() {
         }
         appendTask(task);
     }
+}
+
+//7. function for adding form at sidebar for project input
+function addProjectWindow() {
+    const projectsList = document.querySelector('.projectsList');
+    const form = document.createElement('form');
+    form.classList.add('projectForm');
+    const projectValue = document.createElement('input');
+    projectValue.id = 'projectValue';
+    projectValue.type = 'text';
+    projectValue.placeholder = 'Enter Project Name';
+    const formButtons = document.createElement('div');
+    formButtons.classList.add('formButtons');
+    const addButtonProject = document.createElement('button');
+    addButtonProject.classList.add('addButtonProject');
+    addButtonProject.innerText = 'Add';
+    const cancelButtonProject = document.createElement('button');
+    cancelButtonProject.classList.add('cancelButtonProject');
+    cancelButtonProject.innerText = 'Cancel';
+
+    formButtons.appendChild(addButtonProject);
+    formButtons.appendChild(cancelButtonProject);
+
+    form.appendChild(projectValue);
+    form.appendChild(formButtons);
+
+    projectsList.appendChild(form);
+}
+
+//8. function for storing formProject data and appending project to the sidebar
+function appendProject(project) {
+    const projectSection = document.querySelector('.projectSection');
+    const projectCard = document.createElement('div');
+    projectCard.innerText = ''
 }
