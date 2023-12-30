@@ -22,6 +22,7 @@ import { removeImportantTasks } from './importantTasks.js';
 
 //assigning var to dom elements
 const taskContent = document.querySelector('.taskContent');
+const allTasksButton = document.querySelector('#allTasks');
 const taskCardSection = document.querySelector('.taskCardSection');
 const addTaskButton = document.querySelector('.addTask');
 const todayButton = document.querySelector('#today');
@@ -123,6 +124,9 @@ document.body.addEventListener('click', (event) => {
     } else if(event.target.classList.contains('filledStar') == true) {
         removeImportantTasks(tasksArray);
         changeFilledStar();
+        if(taskContent.id == 'importantTab'){
+            importantPage();
+        }
     }
 })
 
@@ -138,6 +142,11 @@ document.body.addEventListener('click', (event) => {
     if(event.target.id == 'important') {
         importantPage();
     }
+})
+
+//12. click event for all tasks page
+allTasksButton.addEventListener('click', () => {
+    allTasks();
 })
 
 
@@ -160,6 +169,7 @@ function todayPage() {
                 titleValue: tasksArray[i].titleValue,
                 descriptionValue: tasksArray[i].descriptionValue,
                 deadlineValue: tasksArray[i].deadlineValue,
+                importantValue: tasksArray[i].importantValue,
             }
             appendTask(task);
         }
@@ -200,6 +210,7 @@ function thisWeekPage() {
                 titleValue: tasksArray[i].titleValue,
                 descriptionValue: tasksArray[i].descriptionValue,
                 deadlineValue: tasksArray[i].deadlineValue,
+                importantValue: tasksArray[i].importantValue,
             }
             appendTask(task);
         }
@@ -229,7 +240,7 @@ function importantPage() {
     header.classList.add('header');
     const taskCardSection = document.createElement('div');
     taskCardSection.classList.add('taskCardSection');
-    taskContent.parentElement.id = 'importantTab';
+    taskContent.id = 'importantTab';
 
     taskContent.appendChild(header);
     taskContent.appendChild(taskCardSection);
@@ -244,5 +255,34 @@ function importantPage() {
         if(task.importantValue == 'yes') {
             appendTask(task);
         }
+    }
+}
+
+//6. function for display of all tasks tab
+function allTasks() {
+    while(taskContent.firstChild){
+        taskContent.removeChild(taskContent.firstChild);
+    }
+    const header = document.createElement('div');
+    header.classList.add('header');
+    header.innerText = 'All Tasks';
+    const taskCardSection = document.createElement('div');
+    taskCardSection.classList.add('taskCardSection');
+    const addTask = document.createElement('div');
+    addTask.classList.add('addTask');
+    addTask.innerText = 'Add Task';
+
+    taskContent.appendChild(header);
+    taskContent.appendChild(taskCardSection);
+    taskContent.appendChild(addTask);
+
+    for(let i = 0; i < tasksArray.length; i++) {
+        let task = {
+            titleValue: tasksArray[i].titleValue,
+            descriptionValue: tasksArray[i].descriptionValue,
+            deadlineValue: tasksArray[i].deadlineValue,
+            importantValue: tasksArray[i].importantValue
+        }
+        appendTask(task);
     }
 }
