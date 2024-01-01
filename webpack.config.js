@@ -10,7 +10,10 @@ module.exports = {
         './src/checkbox.js',
         './src/deleteTask.js',
         './src/editTask.js',
-        './src/importantTasks.js'
+        './src/importantTasks.js',
+        './src/thisWeek.js',
+        './src/importantPage.js',
+        './src/appendProject.js',
     ],
     devtool: 'inline-source-map',
     output: {

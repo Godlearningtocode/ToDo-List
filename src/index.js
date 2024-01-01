@@ -19,6 +19,18 @@ import { changeStar } from './importantTasks.js';
 import { addImportantTasks } from './importantTasks.js';
 import { changeFilledStar } from './importantTasks.js';
 import { removeImportantTasks } from './importantTasks.js';
+import { todayPage } from './today.js';
+import { todayDate } from './today.js';
+import { thisWeekPage } from './thisWeek.js';
+import { oneWeekDate } from './thisWeek.js';
+import { importantPage } from './importantPage.js'
+import { addProjectWindow } from './appendProject.js';
+import { appendProject } from './appendProject.js';
+import { removeAddProject } from './appendProject.js';
+import { cancelButtonProject } from './appendProject.js';
+import { projectTab } from './appendProject.js';
+import { appendProjectTasks } from './appendProject.js';
+import { deleteProject } from './appendProject.js';
 
 //assigning var to dom elements
 const taskContent = document.querySelector('.taskContent');
@@ -27,7 +39,8 @@ const taskCardSection = document.querySelector('.taskCardSection');
 const addTaskButton = document.querySelector('.addTask');
 const todayButton = document.querySelector('#today');
 const addProject = document.querySelector('.addProject');
-let isFormPresent = false;  
+let isFormPresent = false;
+let isProjectFormPresent = false;
 
 
 //header logo in header section
@@ -42,10 +55,12 @@ let projectsArray = [];
 
 //EVENTLISTENERS:-
 //1. click listener for addtask for form input
-addTaskButton.addEventListener('click', () => {
-    if(!isFormPresent) {
-        addTask();
-        isFormPresent = true;
+document.body.addEventListener('click', (event) => {
+    if(event.target.classList.contains('addTask') === true) {
+        if(!isFormPresent) {
+            addTask(projectsArray);
+            isFormPresent = true;
+        }
     }
 })
 
@@ -56,8 +71,9 @@ document.body.addEventListener('click', (event) => {
         const descriptionValue = document.querySelector('#description').value;
         const deadlineValue = document.querySelector('#deadline').value;
         const importantValue = document.querySelector('#importance').value;
+        const projectValue = document.querySelector('#projectInput').value;
 
-        const task = {titleValue, descriptionValue, deadlineValue, importantValue};
+        const task = {titleValue, descriptionValue, deadlineValue, importantValue, projectValue};
         const form = document.querySelector('form');
         if(form.checkValidity()) {
             tasksArray.push(task);
@@ -80,7 +96,7 @@ document.body.addEventListener('click', (event) => {
 
 //4. click event listener for today section
 todayButton.addEventListener('click', () => {
-    todayPage()
+    todayPage(tasksArray, appendTask);
 })
 
 //5. click event for removing task with checked div from dom and tasksArray
@@ -127,7 +143,7 @@ document.body.addEventListener('click', (event) => {
         removeImportantTasks(tasksArray);
         changeFilledStar();
         if(taskContent.id == 'importantTab'){
-            importantPage();
+            importantPage(tasksArray, appendTask);
         }
     }
 })
@@ -135,14 +151,14 @@ document.body.addEventListener('click', (event) => {
 //10. click event for this week tab
 document.body.addEventListener('click', (event) => {
     if(event.target.id == 'thisWeek') {
-        thisWeekPage();
+        thisWeekPage(tasksArray, appendTask, todayDate);
     }
 })
 
 //11. click event for impotant tab
 document.body.addEventListener('click', (event) => {
     if(event.target.id == 'important') {
-        importantPage();
+        importantPage(tasksArray, appendTask);
     }
 })
 
@@ -151,132 +167,60 @@ allTasksButton.addEventListener('click', () => {
     allTasks();
 })
 
-//13. click event for add Project to append form for project input
-addProject.addEventListener('click', () => {
-    addProjectWindow();
+//13. function for add project window for value input for new project
+document.body.addEventListener('click', (event) => {
+    if(event.target.classList.contains('addProject') === true) {
+        if(!isProjectFormPresent) {
+            addProjectWindow();
+            isProjectFormPresent = true;
+        }
+    }
 })
 
-//14. click event for addProject addButtonProject to append project to the sidebar
+//14. function to append project to the projectList.
 document.body.addEventListener('click', (event) => {
-    if(event.target.classList.contains('addButtonProject') == true) {
-        const projectTitle = document.querySelector('#projectValue').value;
-        let project = {projectTitle};
-        projectsArray.push(project);
-        event.preventDefault();
+    if(event.target.classList.contains('addButtonProject') === true) {
+        let projectTitle = document.querySelector('#projectValue');
+        if(projectTitle.value.length >= 1) {
+            let project = {projectTitle: projectTitle.value};
+            projectsArray.push(project);
+    
+            appendProject();
+            removeAddProject();
+            isProjectFormPresent = false;
+        } else {
+            alert ('Please fill all required details.');
+        }
+    }
+})
+
+//15. click event for when cancelProjectButton is clicked
+document.body.addEventListener('click', (event) => {
+    if(event.target.classList.contains('cancelButtonProject') === true) {
+        removeAddProject();
+        isProjectFormPresent = false;
+    }
+})
+
+//16. click event to delte a project from the list.
+document.body.addEventListener('click', (event) => {
+    if(event.target.classList.contains('projectDelete') === true) {
+        deleteProject(projectsArray);
+    }
+})
+
+//17. click event for project lists tab for switching display to respective tab
+document.body.addEventListener('click', (event) => {
+    if(event.target.classList.contains('projectTitle') === true) {
+        projectTab(event, projectsArray);
+        appendProjectTasks(tasksArray, event)
     }
 })
 
 
 //FUNCTIONS:-
-//1. function for display of dom tree of today page
-function todayPage() {
-    while(taskContent.firstChild) {
-        taskContent.removeChild(taskContent.firstChild);
-    }
-    const header = document.createElement('div');
-    header.classList.add('header');
-    header.innerText = 'Today';
-    taskContent.appendChild(header);
-    const taskCardSection = document.createElement('div');
-    taskCardSection.classList.add('taskCardSection');
-    taskContent.appendChild(taskCardSection);
-    for(let i = 0; i < tasksArray.length; i++) {
-        if(tasksArray[i].deadlineValue == todayDate().currentDate){
-            let task = {
-                titleValue: tasksArray[i].titleValue,
-                descriptionValue: tasksArray[i].descriptionValue,
-                deadlineValue: tasksArray[i].deadlineValue,
-                importantValue: tasksArray[i].importantValue,
-            }
-            appendTask(task);
-        }
-    }
-}
-
-//2. function to get todays date
-function todayDate() {
-    taskContent.id = 'todayTab';
-    const date = new Date();
-    
-    let day = date.getDate();
-    let month = date.getMonth() + 1;
-    let year = date.getFullYear();
-
-    let currentDate = `${year}-${month}-${day}`;
-    return { currentDate };
-}
-
-//3. function for thisWeekPage dom tree display
-function thisWeekPage() {
-    while(taskContent.firstChild) {
-        taskContent.removeChild(taskContent.firstChild);
-    }
-    const header = document.createElement('div');
-    header.innerText = 'This Week';
-    header.classList.add('header');
-    const taskCardSection = document.createElement('div');
-    taskCardSection.classList.add('taskCardSection');
-    taskContent.id = 'thisWeekTab';
-
-    taskContent.appendChild(header);
-    taskContent.appendChild(taskCardSection);
-
-    for(let i = 0; i < tasksArray.length; i++) {
-        if(tasksArray[i].deadlineValue <= oneWeekDate().oneWeekFromToday && tasksArray[i].deadlineValue >= todayDate().currentDate) {
-            let task = {
-                titleValue: tasksArray[i].titleValue,
-                descriptionValue: tasksArray[i].descriptionValue,
-                deadlineValue: tasksArray[i].deadlineValue,
-                importantValue: tasksArray[i].importantValue,
-            }
-            appendTask(task);
-        }
-    }
-}
-
-//4. function to get a date one week from now
-function oneWeekDate() {
-    const date = new Date();
-    date.setDate(new Date().getDate() + 7);
-
-    let day = (date.getDate()) >= 10 ? (date.getDate()) : "0" + (date.getDate());
-    let month = (date.getMonth() + 1) >= 10 ? (date.getMonth() + 1) : "0" + (date.getMonth() + 1);
-    let year = date.getFullYear();
-
-    let oneWeekFromToday = `${year}-${month}-${day}`;
-    return {oneWeekFromToday};
-}
-
-//5. function for display for important tab
-function importantPage() {
-    while(taskContent.firstChild) {
-        taskContent.removeChild(taskContent.firstChild);
-    }
-    const header = document.createElement('div');
-    header.innerText = 'Important';
-    header.classList.add('header');
-    const taskCardSection = document.createElement('div');
-    taskCardSection.classList.add('taskCardSection');
-    taskContent.id = 'importantTab';
-
-    taskContent.appendChild(header);
-    taskContent.appendChild(taskCardSection);
-
-    for(let i = 0; i < tasksArray.length; i++) {
-        let task = {
-            titleValue: tasksArray[i].titleValue,
-            descriptionValue: tasksArray[i].descriptionValue,
-            deadlineValue: tasksArray[i].deadlineValue,
-            importantValue: tasksArray[i].importantValue
-        }
-        if(task.importantValue == 'yes') {
-            appendTask(task);
-        }
-    }
-}
-
-//6. function for display of all tasks tab
-function allTasks() {
+//1. function for display of all tasks tab
+function allTasks(tasksArray) {
     while(taskContent.firstChild){
         taskContent.removeChild(taskContent.firstChild);
     }
@@ -302,38 +246,4 @@ function allTasks() {
         }
         appendTask(task);
     }
-}
-
-//7. function for adding form at sidebar for project input
-function addProjectWindow() {
-    const projectsList = document.querySelector('.projectsList');
-    const form = document.createElement('form');
-    form.classList.add('projectForm');
-    const projectValue = document.createElement('input');
-    projectValue.id = 'projectValue';
-    projectValue.type = 'text';
-    projectValue.placeholder = 'Enter Project Name';
-    const formButtons = document.createElement('div');
-    formButtons.classList.add('formButtons');
-    const addButtonProject = document.createElement('button');
-    addButtonProject.classList.add('addButtonProject');
-    addButtonProject.innerText = 'Add';
-    const cancelButtonProject = document.createElement('button');
-    cancelButtonProject.classList.add('cancelButtonProject');
-    cancelButtonProject.innerText = 'Cancel';
-
-    formButtons.appendChild(addButtonProject);
-    formButtons.appendChild(cancelButtonProject);
-
-    form.appendChild(projectValue);
-    form.appendChild(formButtons);
-
-    projectsList.appendChild(form);
-}
-
-//8. function for storing formProject data and appending project to the sidebar
-function appendProject(project) {
-    const projectSection = document.querySelector('.projectSection');
-    const projectCard = document.createElement('div');
-    projectCard.innerText = ''
 }

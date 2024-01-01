@@ -1,4 +1,4 @@
-export default function addTask() {
+export default function addTask(projectsArray) {
     const taskContent = document.querySelector('.taskContent');
     const form = document.createElement('form');
     form.classList.add('form');
@@ -39,7 +39,22 @@ export default function addTask() {
     importanceYes.innerText = 'Yes';
     const importanceNo = document.createElement('option');
     importanceNo.value = 'no';
-    importanceNo.innerText = 'No'
+    importanceNo.innerText = 'No';
+    const projectLabel = document.createElement('label');
+    projectLabel.classList.add('projectLabel');
+    projectLabel.htmlFor = 'projectInput';
+    projectLabel.innerText = 'Project:';
+    const projectInput = document.createElement('SELECT');
+    projectInput.id = 'projectInput';
+    for(let i = 0; i < projectsArray.length; i++) {
+        let optionValue = document.createElement('option');
+        optionValue.value = projectsArray[i].projectTitle;
+        optionValue.innerText = projectsArray[i].projectTitle;
+        projectInput.appendChild(optionValue);
+    }
+    const noProject = document.createElement('option');
+    noProject.value = 'none';;
+    noProject.innerText = 'None'
     const formButtons = document.createElement('div');
     formButtons.classList.add('formButtons');
     const addButton = document.createElement('button');
@@ -54,6 +69,8 @@ export default function addTask() {
     importanceInput.appendChild(importanceYes);
     importanceInput.appendChild(importanceNo);
 
+    projectInput.appendChild(noProject);
+
     formButtons.appendChild(addButton);
     formButtons.appendChild(cancelButton);
 
@@ -65,6 +82,8 @@ export default function addTask() {
     form.appendChild(deadlineInput);
     form.appendChild(importanceLabel);
     form.appendChild(importanceInput);
+    form.appendChild(projectLabel);
+    form.appendChild(projectInput);
     form.appendChild(formButtons);
 
     taskContent.appendChild(form);

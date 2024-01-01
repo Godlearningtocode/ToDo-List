@@ -144,7 +144,7 @@ button {
     font-size: 1.1rem;
 }
 
-.star, .edit, .delete, .filledStar, #star {
+.star, .edit, .delete, .filledStar, #star, .projectDelete {
     width: 20px;
     height: 20px;
 }
@@ -162,4 +162,29 @@ button {
 
 .formButtons > button {
     color: black;
+}
+
+.projectSection {
+    display: flex;
+    flex-direction: column;
+}
+
+.projectSection > .subCateogary {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.projectTitle {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex: 1 ;
+}
+
+#projectDelete {
+    min-width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
