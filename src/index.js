@@ -1,6 +1,6 @@
 //importing assets
 import './styles.css';
-import logoImage from './double-tick.png'
+import logoImage from './todo.png'
 import starImage from './star_icon.png';
 import filledStarImage from './filled_star.png';
 import editImage from './edit_icon.png';
@@ -50,6 +50,7 @@ headerLogo.src = logoImage;
 
 //array for storing form data
 let tasksArray = [];
+let arrProjectlists = ['All Tasks', 'Today', 'This Week', 'Important']
 let projectsArray = [];
 
 
@@ -97,6 +98,7 @@ document.body.addEventListener('click', (event) => {
 //4. click event listener for today section
 todayButton.addEventListener('click', () => {
     todayPage(tasksArray, appendTask);
+    activeBox(event);
 })
 
 //5. click event for removing task with checked div from dom and tasksArray
@@ -152,6 +154,7 @@ document.body.addEventListener('click', (event) => {
 document.body.addEventListener('click', (event) => {
     if(event.target.id == 'thisWeek') {
         thisWeekPage(tasksArray, appendTask, todayDate);
+        activeBox(event);
     }
 })
 
@@ -159,12 +162,14 @@ document.body.addEventListener('click', (event) => {
 document.body.addEventListener('click', (event) => {
     if(event.target.id == 'important') {
         importantPage(tasksArray, appendTask);
+        activeBox(event);
     }
 })
 
 //12. click event for all tasks page
 allTasksButton.addEventListener('click', () => {
-    allTasks();
+    allTasks(tasksArray);
+    activeBox(event);
 })
 
 //13. function for add project window for value input for new project
@@ -213,7 +218,8 @@ document.body.addEventListener('click', (event) => {
 document.body.addEventListener('click', (event) => {
     if(event.target.classList.contains('projectTitle') === true) {
         projectTab(event, projectsArray);
-        appendProjectTasks(tasksArray, event)
+        appendProjectTasks(tasksArray, event);
+        activeBoxProject(event);
     }
 })
 
@@ -246,4 +252,22 @@ function allTasks(tasksArray) {
         }
         appendTask(task);
     }
+}
+
+//2. function for adding css to active tab on sidebar 
+function activeBox(event) {
+    const activeBox = document.querySelector('.activeBox')
+    if(activeBox !== null) {
+        activeBox.classList.remove('activeBox');
+    }
+    event.target.classList.add('activeBox');
+}
+
+//3. function for adding css to active tab on sidebar 
+function activeBoxProject(event) {
+    const activeBox = document.querySelector('.activeBox')
+    if(activeBox !== null) {
+        activeBox.classList.remove('activeBox');
+    }
+    event.target.parentNode.classList.add('activeBox');
 }

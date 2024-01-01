@@ -22,6 +22,7 @@ export default function appendTask(task) {
     const title = document.createElement('div');
     title.classList.add('title');
     title.innerText = task.titleValue;
+    title.contentEditable = true;
     const description = document.createElement('div');
     description.classList.add('description');
     description.innerText = task.descriptionValue;
