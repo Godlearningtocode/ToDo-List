@@ -124,11 +124,6 @@ button {
     width: 100%;
 }
 
-.taskCard {
-    padding: 10px;
-    width: 100%;
-}
-
 .editBox {
     display: flex;;
     flex-direction: column;
@@ -140,7 +135,8 @@ button {
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-start;
-    width: 100%;
+    width: calc(100% - 20px);
+    padding: 10px;
 }
 
 .taskCard > .leftContent {
@@ -203,7 +199,7 @@ button {
     align-items: center;
 }
 
-.form {
+.form, .editForm{
     display: flex;
     gap: 15px;
     flex-direction: column;
@@ -245,7 +241,7 @@ button {
     gap: 5px;
 }
 
-.form > .formButtons {
+.form > .formButtons, .editForm > .formButtons {
     display: flex;
     flex-direction: row;
     gap: 5px;
@@ -253,7 +249,7 @@ button {
     justify-content: center;
 }
 
-#addButton {
+#addButton, #editAddButton {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -263,7 +259,7 @@ button {
     border-radius: 5px;
 }
 
-#cancelButton {
+#cancelButton, #editCancelButton {
     display: flex;
     justify-content: center;
     align-items: center;

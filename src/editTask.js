@@ -1,11 +1,13 @@
 //5. function to add edit box under the task for edit click event
-export function editBox() {
+export function editBox(event) {
     const editBoxContainer = ((event.target.parentNode).parentNode).parentNode;
     editBoxContainer.classList.add('editBox');
 
     const editForm = document.createElement('form');
     editForm.classList.add('editForm');
 
+    const titleContainer = document.createElement('div');
+    titleContainer.classList.add('titleContainer');
     const editTitle = document.createElement('label');
     editTitle.htmlFor = 'editTitle';
     editTitle.classList.add('editTitle');
@@ -15,6 +17,9 @@ export function editBox() {
     titleInput.id = 'editTitle';
     titleInput.type = 'text';
     titleInput.required = true;
+
+    const descriptionContainer = document.createElement('div');
+    descriptionContainer.classList.add('descriptionContainer');
     const editDescription = document.createElement('label');
     editDescription.htmlFor = 'editDescription';
     editDescription.classList.add('editDescription');
@@ -23,6 +28,9 @@ export function editBox() {
     descriptionInput.name = 'editDescription';
     descriptionInput.id = 'editDescription';
     descriptionInput.type = 'text';
+
+    const deadlineContainer = document.createElement('div');
+    deadlineContainer.classList.add('deadlineContainer');
     const editDeadline = document.createElement('label');
     editDeadline.htmlFor = 'editDeadline';
     editDeadline.classList.add('editDeadline');
@@ -32,6 +40,7 @@ export function editBox() {
     deadlineInput.id = 'editDeadline';
     deadlineInput.type = 'date';
     deadlineInput.required = true;
+
     const formButtons = document.createElement('div');
     formButtons.classList.add('formButtons');
     const addButton = document.createElement('button');
@@ -46,11 +55,17 @@ export function editBox() {
     formButtons.appendChild(addButton);
     formButtons.appendChild(cancelButton);
 
-    editForm.appendChild(editTitle);
-    editForm.appendChild(titleInput);
-    editForm.appendChild(editDescription);
-    editForm.appendChild(descriptionInput);
-    editForm.appendChild(editDeadline);
+    titleContainer.appendChild(editTitle);
+    titleContainer.appendChild(titleInput);
+
+    descriptionContainer.appendChild(editDescription);
+    descriptionContainer.appendChild(descriptionInput);
+
+    deadlineContainer.appendChild(editDeadline);
+    deadlineContainer.appendChild(deadlineInput);
+
+    editForm.appendChild(titleContainer);
+    editForm.appendChild(descriptionContainer);
     editForm.appendChild(deadlineInput);
     editForm.appendChild(formButtons);
 
@@ -59,9 +74,10 @@ export function editBox() {
 
 //6. add editBox input values to task.
 export function editValue() {
-    const title = ((document.querySelector('.editBox').firstChild).firstChild).firstChild.nextSibling.firstChild;
+    const editContainer = document.querySelector('.editContainer');
+    const title = editContainer.firstChild.firstChild.nextSibling.firstChild;
     const description = title.nextSibling;
-    const date = document.querySelector('.editBox').firstChild.firstChild.nextSibling.firstChild;
+    const date = editContainer.firstChild.nextSibling.firstChild;
     const titleValue = document.querySelector('#editTitle').value;
     const descriptionValue = document.querySelector('#editDescription').value;
     const dateValue = document.querySelector('#editDeadline').value;
@@ -70,18 +86,19 @@ export function editValue() {
     date.innerText = dateValue;
 }
 
-//7. functio to remove editBox when editAddButton is clicked
-export function removeEditBox() {
-    const taskCard = document.querySelector('.editBox').firstChild.nextSibling;
-    (taskCard.parentNode).removeChild(taskCard);
+//7. functio to remove editBox when editCancelButton is clicked
+export function removeFormBox(event) {
+    const taskCardSection = document.querySelector('.taskCardSection');
+    taskCardSection.removeChild(taskCardSection.lastChild)
 }
 
 //8. function to remove pre edit values from tasksarray
 export function removeValue(tasksArray) {
-    const taskCardSection = document.querySelector('.editBox');
-    const removeTitle = taskCardSection.firstChild.firstChild.firstChild.nextSibling.firstChild.innerText;
-    for(let i = 0; i < tasksArray.length; i++) {
-        if(removeTitle == tasksArray[i].titleValue) {
+    const editContainer = document.querySelector('.editContainer');
+    const removeTitle = editContainer.firstChild.firstChild.nextSibling.firstChild;
+    console.log(removeTitle.innerText)
+;    for(let i = 0; i < tasksArray.length; i++) {
+        if(removeTitle.innerText === tasksArray[i].titleValue) {
             tasksArray.splice(i, 1);
         }
     }

@@ -52,6 +52,27 @@ export function appendProject() {
     projectSection.appendChild(projectCard);
 }
 
+//function for appending projeccts on first load.
+export function projectOnLoad(project) {
+    const projectSection = document.querySelector('.projectSection');
+    const projectCard = document.createElement('button');
+    projectCard.classList.add('subCateogary');
+    const projectTitle = document.createElement('div');
+    projectTitle.classList.add('projectTitle');
+    projectTitle.innerText = project.projectTitle;
+    const projectDelete = document.createElement('div');
+    projectDelete.id = 'projectDelete';
+    const delete_icon = new Image();
+    delete_icon.src = deleteImage;
+    delete_icon.classList.add('projectDelete');
+
+    projectDelete.appendChild(delete_icon);
+    projectCard.appendChild(projectTitle);
+    projectCard.appendChild(projectDelete);
+
+    projectSection.appendChild(projectCard);
+}
+
 //9. function to remove addProject window after appending the project
 export function removeAddProject() {
     const projectForm = document.querySelector('.projectForm');
@@ -84,7 +105,7 @@ export function projectTab(event, projectsArray) {
 }
 
 //4. function for appending tasks with same projectValue as the projectTab
-export function appendProjectTasks(tasksArray, event) {
+export function appendProjectTasks(tasksArray, event, appendTask) {
     for(let i = 0; i < tasksArray.length; i++) {
         if(tasksArray[i].projectValue == event.target.innerText) {
             let task = {
@@ -100,14 +121,18 @@ export function appendProjectTasks(tasksArray, event) {
 }
 
 //5. function to delete project from the project list
-export function deleteProject(projectsArray) {
-    const projectDelete = document.querySelector('.projectDelete');
-    (((projectDelete.parentElement).parentElement).parentElement).removeChild(((projectDelete.parentElement).parentElement));
-
-    const projectName = projectDelete.parentElement.parentElement.firstChild;
+export function deleteProject(projectsArray, event) {
+    event.target.classList.add('deletedProject');
+    const deletedProject = document.querySelector('.deletedProject');
+    let deletedProjectValue = (deletedProject.parentElement.parentElement.firstChild.innerText).toString();
+    
     for(let i = 0; i < projectsArray.length; i++) {
-        if(projectsArray[i].projectTitle == projectName.innerText) {
+        if(projectsArray[i].projectTitle === deletedProjectValue) {
             projectsArray.splice(i, 1);
+            break;
         }
     }
+
+    const removeProject = deletedProject.parentElement.parentElement
+    removeProject.parentElement.removeChild(removeProject);
 }

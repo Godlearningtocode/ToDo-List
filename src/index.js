@@ -12,7 +12,7 @@ import {removeTaskArray} from './checkbox.js';
 import deleteTask from './deleteTask.js';
 import { editBox } from './editTask.js';
 import { editValue } from './editTask.js';
-import { removeEditBox } from './editTask.js';
+import { removeFormBox } from './editTask.js';
 import { removeValue } from './editTask.js';
 import { addEditValues } from './editTask.js';
 import { changeStar } from './importantTasks.js';
@@ -31,6 +31,7 @@ import { cancelButtonProject } from './appendProject.js';
 import { projectTab } from './appendProject.js';
 import { appendProjectTasks } from './appendProject.js';
 import { deleteProject } from './appendProject.js';
+import { projectOnLoad } from './appendProject.js';
 
 //assigning var to dom elements
 const taskContent = document.querySelector('.taskContent');
@@ -50,6 +51,7 @@ headerLogo.src = logoImage;
 
 //array for storing form data
 let tasksArray = [];
+let retrievedTasksArray = [];
 let arrProjectlists = ['All Tasks', 'Today', 'This Week', 'Important']
 let projectsArray = [];
 
@@ -68,6 +70,7 @@ document.body.addEventListener('click', (event) => {
 //2. click event listener for addbutton on form for addtask
 document.body.addEventListener('click', (event) => {
     if(event.target.id == 'addButton') {
+        console.log(tasksArray);
         const titleValue = document.querySelector('#title').value;
         const descriptionValue = document.querySelector('#description').value;
         const deadlineValue = document.querySelector('#deadline').value;
@@ -75,11 +78,13 @@ document.body.addEventListener('click', (event) => {
         const projectValue = document.querySelector('#projectInput').value;
 
         const task = {titleValue, descriptionValue, deadlineValue, importantValue, projectValue};
-        const form = document.querySelector('form');
+        const form = document.querySelector('.form');
         if(form.checkValidity()) {
             tasksArray.push(task);
+            console.log(tasksArray);
             taskContent.removeChild(taskContent.lastChild);
             appendTask(task);
+            tasksLocalStorage();
         } else {
             alert ('Please fill all required fields!')
         }
@@ -104,9 +109,10 @@ todayButton.addEventListener('click', () => {
 //5. click event for removing task with checked div from dom and tasksArray
 document.body.addEventListener('click', (event) => {
     if (event.target.classList.contains('checkbox') == true) {
-        (event.target.parentNode).parentNode.classList.add('checked');
+        event.target.classList.add('checked');
         removeTaskArray(tasksArray);
         checkedTask();
+        tasksLocalStorage()
     }
 })
 
@@ -116,23 +122,36 @@ document.body.addEventListener('click', (event) => {
         (event.target.parentNode).parentNode.classList.add('deleted');
         removeTaskArray(tasksArray);
         deleteTask();
+        tasksLocalStorage();
     }
 })
 
 //7. click event for edit icon
 document.body.addEventListener('click', (event) => {
-    if(event.target.classList.contains('edit') == true) {
-        editBox();
+    if(event.target.classList.contains('edit') === true) {
+        if(!isFormPresent) {
+            editBox(event);
+            const editContainer = event.target.parentNode.parentNode
+            editContainer.classList.add('editContainer');
+            isFormPresent = true;
+        }
     }
 })
 
 //8. click event for editBox addButton
 document.body.addEventListener('click', (event) => {
     if(event.target.id == 'editAddButton') {
-        removeValue(tasksArray);
-        addEditValues(tasksArray);
-        editValue();
-        removeEditBox();
+        const editForm = document.querySelector('.editForm');
+        if(editForm.checkValidity()) {
+            removeValue(tasksArray);
+            addEditValues(tasksArray);
+            editValue();
+            tasksLocalStorage();
+            removeFormBox();
+            isFormPresent = false;
+        } else {
+            alert ("Please fill all the required details!");
+        }
     }
 })
 
@@ -141,9 +160,11 @@ document.body.addEventListener('click', (event) => {
     if(event.target.classList.contains('star') == true) {
         addImportantTasks(tasksArray);
         changeStar();
+        tasksLocalStorage()
     } else if(event.target.classList.contains('filledStar') == true) {
         removeImportantTasks(tasksArray);
         changeFilledStar();
+        tasksLocalStorage();
         if(taskContent.id == 'importantTab'){
             importantPage(tasksArray, appendTask);
         }
@@ -191,6 +212,7 @@ document.body.addEventListener('click', (event) => {
             projectsArray.push(project);
     
             appendProject();
+            projectLocalStorage();
             removeAddProject();
             isProjectFormPresent = false;
         } else {
@@ -210,7 +232,8 @@ document.body.addEventListener('click', (event) => {
 //16. click event to delte a project from the list.
 document.body.addEventListener('click', (event) => {
     if(event.target.classList.contains('projectDelete') === true) {
-        deleteProject(projectsArray);
+        deleteProject(projectsArray, event);
+        projectLocalStorage();
     }
 })
 
@@ -218,8 +241,24 @@ document.body.addEventListener('click', (event) => {
 document.body.addEventListener('click', (event) => {
     if(event.target.classList.contains('projectTitle') === true) {
         projectTab(event, projectsArray);
-        appendProjectTasks(tasksArray, event);
+        appendProjectTasks(tasksArray, event, appendTask);
         activeBoxProject(event);
+    }
+})
+
+//18. Final click event for when the page loads. display any existing tasks and projects in local storage on the screen
+window.addEventListener('load', (tasksArray) => {
+    const allTasksButton = document.querySelector('#allTasks');
+    allTasksButton.classList.add('activeBox');
+    allTasks(tasksArray);
+    onLoadTasks(tasksArray);
+
+})
+
+//19. click event to remove editForm when editCancelButton is clicked
+document.body.addEventListener('click', (event) => {
+    if(event.target.id === 'editCancelButton') {
+        removeFormBox(event)
     }
 })
 
@@ -237,7 +276,7 @@ function allTasks(tasksArray) {
     taskCardSection.classList.add('taskCardSection');
     const addTask = document.createElement('div');
     addTask.classList.add('addTask');
-    addTask.innerText = 'Add Task';
+    addTask.innerText = '+ Add Task';
 
     taskContent.appendChild(header);
     taskContent.appendChild(taskCardSection);
@@ -270,4 +309,36 @@ function activeBoxProject(event) {
         activeBox.classList.remove('activeBox');
     }
     event.target.parentNode.classList.add('activeBox');
+}
+
+//4. function for accesing localStorage to store arrays for appending tasks when page loads and for saving tasks when new tasks are added to the array. as well as for storing projects.
+function tasksLocalStorage() {
+    localStorage.setItem('tasksArr', JSON.stringify(tasksArray));
+}
+
+//5. function for project storage
+function projectLocalStorage() {
+    localStorage.setItem('projectArr', JSON.stringify(projectsArray))
+}
+
+//6. function to retrieve tasks from storage
+function onLoadTasks() {
+    tasksArray = JSON.parse(localStorage.getItem('tasksArr'));
+    for(let i = 0; i < tasksArray.length; i++) {
+        let task = {
+            titleValue: tasksArray[i].titleValue,
+            descriptionValue: tasksArray[i].descriptionValue,
+            deadlineValue: tasksArray[i].deadlineValue,
+            importantValue: tasksArray[i].importantValue
+        }
+        appendTask(task);
+    }
+
+    projectsArray = JSON.parse(localStorage.getItem('projectArr'));
+    for(let i = 0; i < projectsArray.length; i++) {
+        let project = {
+            projectTitle: projectsArray[i].projectTitle
+        }
+        projectOnLoad(project);
+    }
 }
