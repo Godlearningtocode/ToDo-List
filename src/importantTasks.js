@@ -1,13 +1,10 @@
-import logoImage from './double-tick.png'
 import starImage from './star_icon.png';
 import filledStarImage from './filled_star.png';
-import editImage from './edit_icon.png';
-import deleteImage from './delete_icon.png';
 
 // function to change importnt icon to filled 
 export function changeStar() {
     const star = document.querySelector('.star');
-    if(star.src = starImage) {
+    if(star.src === starImage) {
         star.src = filledStarImage;
         star.classList.add('filledStar');
         star.classList.remove('star');
@@ -32,7 +29,7 @@ export function addImportantTasks(tasksArray) {
 export function changeFilledStar() {
     const filledStar = document.querySelector('.filledStar');
     filledStar.parentElement.parentElement.classList.remove('important');
-    if(filledStar.src = filledStarImage){
+    if(filledStar.src === filledStarImage){
         filledStar.src = starImage;
         filledStar.classList.add('star');
         filledStar.classList.remove('filledStar');

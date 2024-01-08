@@ -87,7 +87,7 @@ export function editValue() {
 }
 
 //7. functio to remove editBox when editCancelButton is clicked
-export function removeFormBox(event) {
+export function removeFormBox() {
     const taskCardSection = document.querySelector('.taskCardSection');
     taskCardSection.removeChild(taskCardSection.lastChild)
 }

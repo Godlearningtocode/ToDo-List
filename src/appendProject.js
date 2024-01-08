@@ -88,7 +88,7 @@ export function cancelButtonProject() {
 //3. function for project click event display of individual tabs of projects.
 export function projectTab(event, projectsArray) {
     for(let i = 0; i < projectsArray.length; i++) {
-        if(event.target.value = projectsArray[i].projectTitle) {
+        if(event.target.innerText === projectsArray[i].projectTitle) {
             const taskContent = document.querySelector('.taskContent');
             while(taskContent.firstChild) {
                 taskContent.removeChild(taskContent.firstChild)

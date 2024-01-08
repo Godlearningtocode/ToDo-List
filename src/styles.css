@@ -168,6 +168,10 @@ button {
     padding: 10px;
 }
 
+.addTask:hover {
+    cursor: pointer;
+}
+
 .addTaskContainer {
     display: flex;
     flex-direction: column;

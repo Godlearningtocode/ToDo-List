@@ -70,7 +70,6 @@ document.body.addEventListener('click', (event) => {
 //2. click event listener for addbutton on form for addtask
 document.body.addEventListener('click', (event) => {
     if(event.target.id == 'addButton') {
-        console.log(tasksArray);
         const titleValue = document.querySelector('#title').value;
         const descriptionValue = document.querySelector('#description').value;
         const deadlineValue = document.querySelector('#deadline').value;
@@ -81,7 +80,6 @@ document.body.addEventListener('click', (event) => {
         const form = document.querySelector('.form');
         if(form.checkValidity()) {
             tasksArray.push(task);
-            console.log(tasksArray);
             taskContent.removeChild(taskContent.lastChild);
             appendTask(task);
             tasksLocalStorage();
@@ -97,6 +95,7 @@ document.body.addEventListener('click', (event) => {
 document.body.addEventListener('click', (event) => {
     if(event.target.id == 'cancelButton') {
         taskContent.removeChild(taskContent.lastChild);
+        isFormPresent = false;
     }
 })
 
@@ -157,7 +156,7 @@ document.body.addEventListener('click', (event) => {
 
 //9. click event for important icon to change empty star to filled star and add task values to importantTasks array.
 document.body.addEventListener('click', (event) => {
-    if(event.target.classList.contains('star') == true) {
+    if(event.target.classList.contains('star') === true) {
         addImportantTasks(tasksArray);
         changeStar();
         tasksLocalStorage()
@@ -215,9 +214,11 @@ document.body.addEventListener('click', (event) => {
             projectLocalStorage();
             removeAddProject();
             isProjectFormPresent = false;
+            event.preventDefault();
         } else {
             alert ('Please fill all required details.');
         }
+
     }
 })
 
@@ -251,7 +252,7 @@ window.addEventListener('load', (tasksArray) => {
     const allTasksButton = document.querySelector('#allTasks');
     allTasksButton.classList.add('activeBox');
     allTasks(tasksArray);
-    onLoadTasks(tasksArray);
+    onLoadTasks();
 
 })
 
@@ -261,6 +262,16 @@ document.body.addEventListener('click', (event) => {
         removeFormBox(event)
     }
 })
+
+//20. Click event for preventing enter keydown from submitting the form and refreshing the site
+window.addEventListener('keydown', function(e) {
+    if (e.keyIdentifier == 'U+000A' || e.keyIdentifier == 'Enter' || e.keyCode == 13) {
+        if (e.target.nodeName == 'INPUT' && e.target.type == 'text') {
+            e.preventDefault();
+            return false;
+        }
+    }
+}, true);
 
 
 //FUNCTIONS:-
@@ -332,6 +343,8 @@ function onLoadTasks() {
             importantValue: tasksArray[i].importantValue
         }
         appendTask(task);
+        importantIconClass();
+        onLoadImportant();
     }
 
     projectsArray = JSON.parse(localStorage.getItem('projectArr'));
@@ -340,5 +353,27 @@ function onLoadTasks() {
             projectTitle: projectsArray[i].projectTitle
         }
         projectOnLoad(project);
+    }
+}
+
+//7. Function for selecting class of important icon based on its value
+function importantIconClass () {
+    const importantIcon = document.querySelector('.star');
+    const importantFilledIcon = document.querySelector('.filledStar');
+    if(importantIcon) {
+        importantIcon.classList.add('filledStar');
+        importantIcon.classList.remove('star')
+    } else {
+        importantFilledIcon.classList.add('.star');
+        importantFilledIcon.classList.remove('filledStar');
+    }
+}
+
+//8. Function to add important class on taskcard on windows load
+function onLoadImportant() {
+    const taskCard = document.querySelector('.taskCard');
+    const importantIcon = document.querySelector('.filledStar');
+    if(importantIcon) {
+        taskCard.classList.add('important');
     }
 }

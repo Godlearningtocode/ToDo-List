@@ -71,7 +71,7 @@ export default function addTask(projectsArray) {
         projectInput.appendChild(optionValue);
     }
     const noProject = document.createElement('option');
-    noProject.value = 'none';;
+    noProject.value = 'none';
     noProject.innerText = 'None'
     const formButtons = document.createElement('div');
     formButtons.classList.add('formButtons');
