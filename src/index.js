@@ -79,6 +79,7 @@ document.body.addEventListener('click', (event) => {
         const task = {titleValue, descriptionValue, deadlineValue, importantValue, projectValue};
         const form = document.querySelector('.form');
         if(form.checkValidity()) {
+            console.log(tasksArray)
             tasksArray.push(task);
             taskContent.removeChild(taskContent.lastChild);
             appendTask(task);
