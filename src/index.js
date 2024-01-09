@@ -335,24 +335,28 @@ function projectLocalStorage() {
 //6. function to retrieve tasks from storage
 function onLoadTasks() {
     tasksArray = JSON.parse(localStorage.getItem('tasksArr'));
-    for(let i = 0; i < tasksArray.length; i++) {
-        let task = {
-            titleValue: tasksArray[i].titleValue,
-            descriptionValue: tasksArray[i].descriptionValue,
-            deadlineValue: tasksArray[i].deadlineValue,
-            importantValue: tasksArray[i].importantValue
+    if(tasksArray) {
+        for(let i = 0; i < tasksArray.length; i++) {
+            let task = {
+                titleValue: tasksArray[i].titleValue,
+                descriptionValue: tasksArray[i].descriptionValue,
+                deadlineValue: tasksArray[i].deadlineValue,
+                importantValue: tasksArray[i].importantValue
+            }
+            appendTask(task);
+            importantIconClass();
+            onLoadImportant();
         }
-        appendTask(task);
-        importantIconClass();
-        onLoadImportant();
     }
 
     projectsArray = JSON.parse(localStorage.getItem('projectArr'));
-    for(let i = 0; i < projectsArray.length; i++) {
-        let project = {
-            projectTitle: projectsArray[i].projectTitle
+    if(projectsArray) {
+        for(let i = 0; i < projectsArray.length; i++) {
+            let project = {
+                projectTitle: projectsArray[i].projectTitle
+            }
+            projectOnLoad(project);
         }
-        projectOnLoad(project);
     }
 }
 
