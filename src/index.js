@@ -335,6 +335,7 @@ function projectLocalStorage() {
 //6. function to retrieve tasks from storage
 function onLoadTasks() {
     tasksArray = JSON.parse(localStorage.getItem('tasksArr'));
+    console.log(tasksArray.length)
     for(let i = 0; i < tasksArray.length; i++) {
         let task = {
             titleValue: tasksArray[i].titleValue,
